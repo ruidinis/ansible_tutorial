@@ -3,12 +3,19 @@
 - hosts: all
   become: true
   tasks:
+   - name: update repository index
+     dnf:
+      update_cache: yes
+     when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
+
    - name: install apache(httpd) package
      dnf:
-      name=httpd
-      state=latest
+      name: httpd
+      state: latest
+     when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
 
    - name: ensure httpd is started
      systemd:
-      name=httpd
-      state=started
+      name: httpd
+      state: started
+     when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"

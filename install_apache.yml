@@ -1,0 +1,14 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+   - name: install apache(httpd) package
+     dnf:
+      name=httpd
+      state=latest
+
+   - name: ensure httpd is started
+     systemd:
+      name=httpd
+      state=started

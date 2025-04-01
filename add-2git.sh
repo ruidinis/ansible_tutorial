@@ -6,7 +6,6 @@ if [ -z "$1" ] && [ -z "$2" ]; then
     exit 1
 fi
 
-
 COMMIT_MSG="$1"
 
 # Add all changes
@@ -15,10 +14,17 @@ git add .
 # Commit changes
 git commit -m "$COMMIT_MSG"
 
-ORIGIN="$2"
+if [ ! -z "$2" ]; then
+  ORIGIN="$2"
 
-# Push
-git push origin "$ORIGIN"
+  # Push
+  git push origin "$ORIGIN"
+   
+else
+
+  git push
+
+fi
 
 echo "Changes successfully pushed to the repository."
 

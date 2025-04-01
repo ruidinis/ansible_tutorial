@@ -1,0 +1,28 @@
+---
+- name: Add HashiCorp Repo
+  hosts: all
+  become: yes
+
+  tasks:
+   - name: Add HashiCorp repository
+     yum_repository:
+      name: hashicorp
+      description: HashiCorp Stable-$releasever-$basearch
+      baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
+      gpgcheck: yes
+      gpgkey: https://rpm.releases.hashicorp.com/gpg
+
+   - name: Install Terraform
+     yum:
+      name: terraform
+      state: latest
+
+   - name: Verify Terraform Installation
+     command: terraform version
+     register: terraform_version
+     changed_when: false
+
+   - name: Display Terraform Version
+     debug:
+      msg: "Terraform installed: {{ terraform_version.stdout }}"
+

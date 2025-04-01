@@ -28,4 +28,17 @@
       owner: spectrum
       group: wheel
       mode: 0644
-       
+
+   - name: Install Terraform
+     dnf:
+      name: terraform
+      state: present
+
+   - name: Verify Terraform Installation
+     command: terraform version
+     register: terraform_version
+     changed_when: false
+
+   - name: Display Terraform Version
+     debug:
+      msg: "Terraform installed: {{ terraform_version.stdout }}"

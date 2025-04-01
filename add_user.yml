@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+   
+   - name: create a spectrum2 user
+     tags: always
+     user:
+      name: spectrum2
+      groups: wheel
+
+   - name: add ssh key fro spectrum2
+     tags: always
+     authorized_key:
+      user: spectrum2
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICaeqAGe2Omx7fxFaT6684DmbL5goCx5Cww1+KOU9T4W ansible"
+
+   - name: add sudoers file for spectrum2
+     copy:
+      src: sudoer_spectrum2
+      dest: /etc/sudoers.d/spectrum2
+      owner: root
+      group: root
+      mode: 0440

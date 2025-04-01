@@ -2,20 +2,25 @@
 
 - hosts: all
   become: true
-  tasks:
+  
+  pre_tasks:
    - name: update repository index
      dnf:
       update_cache: yes
      when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
 
+- hosts: all
+  become: true
+
+  tasks:
    - name: install apache(httpd) package
      dnf:
       name: httpd
       state: latest
      when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
-
+ 
    - name: ensure httpd is started
-     systemd:
+     systemd: # Like service:
       name: httpd
       state: started
      when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
@@ -28,17 +33,3 @@
       owner: spectrum
       group: wheel
       mode: 0644
-
-   - name: Install Terraform
-     dnf:
-      name: terraform
-      state: present
-
-   - name: Verify Terraform Installation
-     command: terraform version
-     register: terraform_version
-     changed_when: false
-
-   - name: Display Terraform Version
-     debug:
-      msg: "Terraform installed: {{ terraform_version.stdout }}"
